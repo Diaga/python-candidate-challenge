@@ -3,8 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>Favorites</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        a {
+            margin: 0 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            text-align: center;
+            width: 100%;
+        }
+
+        .image {
+            width: 30%;
+        }
+    </style>
 </head>
 <body>
+<div class="banner">{{banner}}</div>
+<nav>
+    <div>
+        Python Challenge
+    </div>
+    <div>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'geo_location' %}">Manage preset list</a>
+    </div>
+</nav>
+<section>
+    <div class="images">
+        {% for photo in photos %}
 
+        <div class="image">
+            <div>
+                <img src="{{photo.url}}" alt="{{photo.title}}">
+            </div>
+            <a href="{% url 'geo_location_favorites' %}?favorite_link={{photo.url}}&title={{photo.title}}">Remove from
+                favorites</a>
+        </div>
+
+        {% endfor %}
+    </div>
+</section>
 </body>
 </html>

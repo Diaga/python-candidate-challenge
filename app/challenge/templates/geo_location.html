@@ -9,6 +9,10 @@
             box-sizing: border-box;
         }
 
+        a {
+            margin: 0 10px;
+        }
+
         .center {
             display: flex;
             justify-content: center;
@@ -44,6 +48,7 @@
     </div>
     <div>
         <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'geo_location_favorites' %}">Favorites</a>
     </div>
 </nav>
 <div class="center">

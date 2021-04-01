@@ -27,6 +27,10 @@ class FavoritesList(models.Model):
     title = models.TextField()
     link = models.TextField()
 
+    @property
+    def url(self):
+        return self.link
+
     class Meta:
         app_label = 'challenge'
         default_related_name = 'favorites_lists'

@@ -20,6 +20,10 @@
             padding: 10px;
         }
 
+        a {
+            margin: 0 10px;
+        }
+
         .images {
             display: flex;
             flex-wrap: wrap;
@@ -48,6 +52,7 @@
         Python Challenge
     </div>
     <div>
+        <a href="{% url 'geo_location_favorites' %}">Favorites</a>
         <a href="{% url 'geo_location' %}">Manage preset list</a>
     </div>
 </nav>
@@ -89,17 +94,28 @@
             <div>
                 <img src="{{photo.url}}" alt="{{photo.title}}">
             </div>
-            <a href="{{photo.url}}">Add to favorites</a>
+            {% if photo.is_favorite %}
+            <a href="{% url 'geo_location_favorites' %}?favorite_link={{photo.url}}&title={{photo.title}}">Remove from favorites</a>
+            {% endif %}
+
+            {% if not photo.is_favorite %}
+            <a href="{% url 'geo_location_favorites' %}?favorite_link={{photo.url}}&title={{photo.title}}">Add to favorites</a>
+            {% endif %}
         </div>
 
         {% endfor %}
     </div>
 
     <div class="nav-images">
-        {% if page != 1 %}
-        <a href="{{request.get_full_path}}&page={{page|add:'-1'}}">Previous</a>
+        {% if page != '0' %}
+        {% if page != '1' %}
+        <a href="{{request.path}}?lat={{lat}}&long{{long}}&preset={{preset}}&page={{page|add:'-1'}}">Previous</a>
         {% endif %}
-        <a href="{{request.get_full_path}}&page={{page|add:'1'}}">Next</a>
+        {% endif %}
+
+        {% if page != '0' %}
+        <a href="{{request.path}}?lat={{lat}}&long{{long}}&preset={{preset}}&page={{page|add:'1'}}">Next</a>
+        {% endif %}
     </div>
 </section>
 
