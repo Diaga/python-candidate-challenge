@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python Challenge</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body, section {
+            width: 100%;
+            margin: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            text-align: center;
+            width: 100%;
+        }
+
+        .image {
+            width: 30%;
+        }
+
+        .preset {
+            display: none;
+        }
+
+        .nav-images {
+            display: flex;
+            justify-content: space-evenly;
+            padding: 25px;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div>
+        Python Challenge
+    </div>
+    <div>
+        <a href="{% url 'geo_location' %}">Manage preset list</a>
+    </div>
+</nav>
+<div>{{banner}}</div>
+<div class="search">
+    <label for="search">Choose search method:</label>
+    <select id="search" name="search" onchange="switchSearchTool()">
+        <option value="longlat">Longitude/Latitude</option>
+        <option value="preset">Preset List</option>
+    </select>
+</div>
+
+<div class="preset">
+    <form action="/" method="get">
+        <label for="preset">Choose location:</label>
+        <select id="preset" name="preset">
+            {% for geo_loc in geo_locations %}
+            <option value="{{geo_loc.id}}">{{geo_loc.name}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Search">
+    </form>
+</div>
+
+<div class="form">
+    <form action="/" method="get">
+        <label for="long">Longitude: </label>
+        <input id="long" type="text" name="long" value="{{ long }}" required>
+        <label for="lat">Latitude: </label>
+        <input id="lat" type="text" name="lat" value="{{ lat }}" required>
+        <input type="submit" value="Search">
+    </form>
+</div>
+<section>
+    <div class="images">
+        {% for photo in photos %}
+
+        <div class="image">
+            <div>
+                <img src="{{photo.url}}" alt="{{photo.title}}">
+            </div>
+            <a href="{{photo.url}}">Add to favorites</a>
+        </div>
+
+        {% endfor %}
+    </div>
+
+    <div class="nav-images">
+        {% if page != 1 %}
+        <a href="{{request.get_full_path}}&page={{page|add:'-1'}}">Previous</a>
+        {% endif %}
+        <a href="{{request.get_full_path}}&page={{page|add:'1'}}">Next</a>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    const queryDict = {}
+    location.search.substr(1).split("&").forEach(function (item) {
+        queryDict[item.split("=")[0]] = item.split("=")[1]
+    });
+
+    if (queryDict.preset !== undefined) {
+        document.getElementById('search').value = 'preset';
+        document.getElementById('preset').value = queryDict.preset;
+
+        document.querySelector('.preset').style.display = 'block';
+        document.querySelector('.form').style.display = 'none';
+    }
+
+    function switchSearchTool() {
+        const val = event.target.value;
+
+        if (val === 'longlat') {
+            document.querySelector('.preset').style.display = 'none';
+            document.querySelector('.form').style.display = 'block';
+        } else {
+            document.querySelector('.preset').style.display = 'block';
+            document.querySelector('.form').style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>

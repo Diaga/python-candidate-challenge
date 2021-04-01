@@ -24,3 +24,12 @@ class FavoritesList(models.Model):
     """Stores a search result list"""
 
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    title = models.TextField()
+    link = models.TextField()
+
+    class Meta:
+        app_label = 'challenge'
+        default_related_name = 'favorites_lists'
+
+    def __str__(self):
+        return f'{self.title} - {self.link}'

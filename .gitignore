@@ -6,3 +6,9 @@ venv/
 
 # macOS files
 .DS_Store
+
+# SQLite DB
+*.sqlite3
+
+# Python
+__pycache__

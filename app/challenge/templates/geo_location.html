@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GeoLocation</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+        }
+
+        input {
+            margin: 0 10px
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        .banner {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div class="banner">{{banner}}</div>
+<nav>
+    <div>
+        Python Challenge
+    </div>
+    <div>
+        <a href="{% url 'index' %}">Home</a>
+    </div>
+</nav>
+<div class="center">
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="name">Name: </label>
+        <input id="name" type="text" name="name" required>
+        <label for="long">Longitude: </label>
+        <input id="long" type="text" name="long" required>
+        <label for="lat">Latitude: </label>
+        <input id="lat" type="text" name="lat" required>
+        <input type="submit" value="Add to preset list">
+    </form>
+</div>
+<section>
+    <h2>Preset List</h2>
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th>Sr. No</th>
+                <th>Name</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>Actions</th>
+            </tr>
+            {% for location in geo_locations %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{location.name}}</td>
+                <td>{{location.longitude}}</td>
+                <td>{{location.latitude}}</td>
+                <td><a href="{% url 'geo_location_delete' location.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</section>
+</body>
+</html>
